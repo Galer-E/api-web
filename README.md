@@ -1,2 +1,2 @@
 # api-web
-Contient le code source de l'api web du projet Galer-E.
+Contient le code source de l'api web du projet Galer-E. Release/develop
