@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+		
+		<nav class="container-fluid nav-background pt-3 pb-3" th:fragment="nav">
+			<div class="row justify-content-center pt-1">
+				
+				<div class="col-2 text-center font align-self-center">
+					<h5><a class="nav-link m-0 p-0 mr-5" href="" th:utext="#{nav.title}">
+			          GALER-E
+			        </a></h5>
+				</div>
+				
+				<div class="col-6 text-center font align-self-center">
+					<div sec:authorize="isAuthenticated()">
+						<h5><a class="nav-link m-0 p-0 mr-3" href="" th:utext="#{nav.home}">
+				          
+				        </a></h5>
+				        <h5><a class="nav-link m-0 p-0 mr-3" href="" th:utext="#{nav.list}">
+				          
+				        </a></h5>
+			        </div>
+				</div>
+				
+			    <div class="col-3 text-center user-space align-self-center font">
+			    
+					<div sec:authorize="isAuthenticated()">
+						<h5><a sec:authentication="name" class="nav-link m-0 p-0 mr-2" th:href="@{/users/space}">
+	           		 	
+	           		 	</a></h5>
+	          			<form class="m-0 p-0" th:action="@{/logout}" method="post" style="display:inline">
+            				<h5 class="m-0 p-0">
+	            				<button class="nav-disconnect m-0 p-0 mr-2" type="submit" id="" th:utext="#{nav.disconnection}">
+		                        
+		                  	  	</button>
+            				</h5>
+            			</form>
+					</div>
+					
+					<div sec:authorize="!isAuthenticated()">
+						<h5><a class="nav-link m-0 p-0 mr-2" th:href="@{/login}" th:utext="#{nav.connection}">
+	           		 		
+	          			</a></h5>
+					</div>
+					
+				</div>
+				
+			</div>
+		</nav>
+	
+</html>
