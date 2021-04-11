@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/IndexStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+		
+	<body>
+		<div class="container-fluid m-0 p-0 bg-info">
+					
+			<div class="image-container border-bottom border-dark">
+                <img class="col-12 m-0 p-0 mt-4" th:src="@{/images/admin.png} " />
+                
+                <div class="col-12 image-container-centered-top m-0 p-0 pt-3 mt-3">
+					<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
+                </div>
+                
+                <div class="container-fluid col-8 image-container-centered text-center" sec:authorize="isAuthenticated()">				
+					<div class="row justify-content-center mb-4">
+						<h1 class="align-center mt-4 pt-5" th:utext="#{admin.user.list}"></h1>
+					</div>
+				</div>
+            </div>
+			
+			<div class="p-0 mt-4 ml-4 mr-4 bg-white border-top border-dark" sec:authorize="isAuthenticated()">
+			 
+      			<div sec:authorize="hasRole('ROLE_ADMIN')">
+					<table class="table table-striped m-0" border="1">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Nom d'utilisateur</th>
+								<th>Rôles</th>
+								<th>Mot de passe</th>
+								<th>Date d'inscription</th>
+								<th>Edit</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="user : ${users}">
+								<th scope="row" th:utext="${user.id}">...</th>
+								<th th:utext="${user.login}">...</th>
+								<th th:utext="${user.getStringRoles()}">...</th>
+								<th th:utext="${user.pass}">...</th>
+								<th th:utext="${user.entry}">...</th>
+								<th>
+									<a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a>
+					            	<a th:href="@{/user/delete/{id}(id=${user.id})}">Delete</a>
+					            </th>
+							</tr>
+						</tbody>
+					</table>
+					<div class="pt-4 pb-5 row justify-content-center bg-info">
+						<h5>
+							<a class="nav-link" th:href="@{/index}" th:utext="#{button.backindex}">
+								Revenir à l'accueil
+							</a>
+						</h5>
+					</div>
+				</div>
+			
+			</div>
+			
+		</div>
+   </body>
+</html>

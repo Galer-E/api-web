@@ -1,0 +1,42 @@
+.hide {
+    display: none;
+}
+
+.user-space {
+    top: 50%;
+}
+
+.footer-body {
+    background-color: #2F2E2E;
+    color: white;
+}
+
+.footer-end {
+    background-color: #171717;
+    color: white;
+}
+
+.footer-logo {
+    opacity: 0.5;
+}
+
+.nav-background {
+    background-color: #524E5F;
+}
+
+nav h5 {
+    display: inline;
+}
+
+.support-button {
+    color: black;
+    background-color: #8F98E2;
+    text-decoration: solid;
+    border-radius: 15px;
+}
+
+.support-button:hover {
+    color: black;
+    background-color: #2F83E3;
+    text-decoration: solid;
+}
