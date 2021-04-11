@@ -1,0 +1,58 @@
+.image-container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  
+  .image-container-bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+  }
+  
+  .image-container-top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+  }
+  
+  .image-container-top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+  }
+  
+  .image-container-bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+  }
+  
+  .image-container-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .image-container-centered-bottom {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .image-container-centered-top {
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #user {
+    cursor: pointer;
+  }
+
+  .img-filter-opacity {
+    filter: opacity(27%);
+  }

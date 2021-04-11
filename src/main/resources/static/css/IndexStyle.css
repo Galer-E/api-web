@@ -1,0 +1,37 @@
+.full-white-transparent {
+    background-color: white       !important;
+    opacity: 0.5                    !important;
+    height: 100%                    !important;
+    width: 100%                     !important;
+}
+
+.main-link {
+    color: white;
+    text-decoration: solid;
+}
+
+.main-link:hover {
+    color: rgb(197, 194, 194);
+    display: inline;
+    text-decoration: solid;
+}
+
+.join-body {
+    background-color: #E8E6E6;
+}
+
+.products-body {
+    background-color: #7DBAAE;
+}
+
+.letter-body {
+    background-color: #9B93B4;
+}
+
+.letter-input {
+    border: none;
+}
+
+.body-color-title {
+    color:  #292929;
+}

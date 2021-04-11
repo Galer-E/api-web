@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'avenirlight';
+    src: url('fonts/avenirltstd-light.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font {
+    font-family: avenirlight, sans-serif;
+}
+
+.text-important {
+    background-color: lightgray;
+    border: 2px solid black;
+    text-decoration: solid;
+    color: black                !important;
+}
+
+.subtitle {
+    font-size: x-large;
+    text-decoration: none;
+}
+
+.title-color {
+    color: #E3EAB5;
+    display: inline;
+}
+
+.title-link {
+    color: #459DC4;
+    display: inline;
+    text-decoration: solid;
+}
+
+.title-link:hover {
+    color: #387996;
+    display: inline;
+    text-decoration: solid;
+}
+
+.subscribe-link {
+    color: #8F98E2;
+    background-color: white;
+    text-decoration: solid;
+    display: inline;
+}
+
+.subscribe-link:hover {
+    color: #c4c9f0;
+    text-decoration: solid;
+    display: inline;
+}
+
+.shop-link {
+    color: #FED389;
+    text-decoration: solid;
+    display: inline;
+}
+
+.shop-link:hover {
+    color: #d8c29d;
+    text-decoration: solid;
+    display: inline;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: solid;
+    display: inline;
+}
+
+.nav-link:hover {
+    color: lightgray;
+}
+
+.nav-disconnect {
+	color: white;
+    background-color: #524E5F;
+    border: 0px;
+    text-decoration: solid;
+    font-size: 1em;
+}
+
+.nav-disconnect:hover {
+	color: lightgray;
+    background-color: #524E5F;
+    border: 0px;
+    text-decoration: solid;
+    cursor: pointer;
+}
+
+.nav-disconnect:focus {
+    outline: 0px;
+}
+
+.footer-title {
+    color: #767676;
+}
