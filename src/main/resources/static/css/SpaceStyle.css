@@ -1,0 +1,24 @@
+.category-title {
+    text-decoration: solid;
+    color: black;
+}
+.category-title:hover {
+    text-decoration: solid;
+    color: navy;
+}
+.category-container {
+    border: none;
+    border-bottom: 3px solid navy;
+}
+.category-container:hover {
+    border: 3px solid navy;
+    background-color: lightskyblue;
+}
+
+form input {
+    width: 60%;
+}
+
+form textarea {
+    width: 60%;
+}

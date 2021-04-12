@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 		
-		<nav class="container-fluid nav-background pt-3 pb-3" th:fragment="nav">
+		<nav class="container-fluid nav-background pt-3 pb-3 border-bottom border-dark" th:fragment="nav">
 			<div class="row justify-content-center pt-1">
 				
 				<div class="col-2 text-center font align-self-center">
-					<h5><a class="nav-link m-0 p-0 mr-5" href="" th:utext="#{nav.title}">
+					<h5><a class="nav-link m-0 p-0 mr-5" th:href="@{index}" th:utext="#{nav.title}">
 			          GALER-E
 			        </a></h5>
 				</div>
@@ -24,7 +24,7 @@
 			    <div class="col-3 text-center user-space align-self-center font">
 			    
 					<div sec:authorize="isAuthenticated()">
-						<h5><a sec:authentication="name" class="nav-link m-0 p-0 mr-2" th:href="@{/users/space}">
+						<h5><a sec:authentication="name" class="nav-link m-0 p-0 mr-2" th:href="@{/user/me}">
 	           		 	
 	           		 	</a></h5>
 	          			<form class="m-0 p-0" th:action="@{/logout}" method="post" style="display:inline">
@@ -46,5 +46,22 @@
 				
 			</div>
 		</nav>
+	
+		
+		<div class="image-container border-bottom border-dark" th:fragment="nav-connected (title, admin)">
+              <img sec:authorize="hasRole('ROLE_ADMIN')" class="col-12 m-0 p-0 mt-5" th:src="@{/images/admin.png} " />
+              <img sec:authorize="hasRole('ROLE_USER')" class="col-12 m-0 p-0 mt-5" th:src="@{/images/start-connected.png} " />
+              
+              <div class="col-12 image-container-centered-top m-0 p-0 pt-3 mt-3">
+					<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
+              </div>
+              
+              <div class="container-fluid col-8 image-container-centered text-center" sec:authorize="isAuthenticated()">				
+				<div class="row justify-content-center mb-4">
+					<h1 class="align-center mt-5 pt-4 " th:utext="${title}"></h1>
+				</div>
+			</div>
+        </div>
+		
 	
 </html>

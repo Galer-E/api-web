@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -25,22 +26,27 @@ public class Image {
 	private Long id;
 	
 	@Column(name = "Url")
+	@NotNull
 	private String url;
 	
 	@Column(name = "Title")
 	@Size(max = 100)
+	@NotNull
 	private String title;
 	
 	@Column(name = "Description")
+	@NotNull
 	private String description;
 
 	@Column(name = "Tags")
+	@NotNull
 	private String tags;
 	
 	@Column(name = "Content")
 	private String Content;
 	
 	@Column(name = "Date")
+	@NotNull
 	private LocalDate date;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
