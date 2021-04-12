@@ -1,11 +1,16 @@
 package com.galere.pictures.config;
 
+import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import com.galere.pictures.config.core.ReloadKeyThread;
 import com.galere.pictures.entities.User;
 import com.galere.pictures.services.IEncryptionService;
 import com.galere.pictures.services.IUserService;
@@ -34,7 +39,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .and()
 		        .authorizeRequests()
 		        .antMatchers("/admin/**").hasRole("ADMIN")
-		        .antMatchers("/user/**").hasRole("USER")
+		        .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 		        .antMatchers("/shared/**").hasAnyRole("USER","ADMIN")
 	        .and()
 		        .exceptionHandling()
@@ -43,14 +48,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {        
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {      
         for (User u : users.getRepository().findAll()) {
         	auth.inMemoryAuthentication()
 	    		.withUser(u.getLogin())
 	    		.password("{noop}" + encryption.decrypt(u.getPass()))
 	    		.roles(u.getHeightRole().getLevel() > 0 ? "ADMIN" : "USER");
         }
+        auth.userDetailsService(inMemoryUserDetailsManager());
+        ApplicationEndHandle.reloader = new ReloadKeyThread(encryption);
+//        ApplicationEndHandle.reloader.start();
     }
-
-
+    
+    @Bean
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+        final Properties users = new Properties();
+        return new InMemoryUserDetailsManager(users);
+    }
+    
 }

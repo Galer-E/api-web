@@ -28,6 +28,15 @@ nav h5 {
     display: inline;
 }
 
+.button-search {
+	cursor: pointer;
+	border: 2px solid lightgray;
+}
+
+.button-search:hover {
+	border: 2px solid gray;
+}
+
 .support-button {
     color: black;
     background-color: #8F98E2;

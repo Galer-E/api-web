@@ -14,52 +14,54 @@
 		
 	<body>
 		<div class="container-fluid m-0 p-0">
-					
-			<div class="image-container">
-                <img sec:authorize="!isAuthenticated()" class="col-12 m-0 p-0" th:src="@{/images/start.png} " />
-                <img sec:authorize="isAuthenticated()" class="col-12 m-0 p-0 mt-5" th:src="@{/images/start-connected.png} " />
-                
-                <div sec:authorize="!isAuthenticated()" class="col-12 image-container-centered-top m-0 p-0 pt-2 mt-3">
-					<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
-                </div>
-                <div sec:authorize="isAuthenticated()" class="col-12 image-container-centered-top m-0 p-0 pt-3 mt-3">
-					<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
-                </div>
-                
-                <div class="container-fluid col-8 image-container-centered text-center" sec:authorize="!isAuthenticated()">				
-					<div class="row justify-content-center mb-4">
-						<h1 class="align-center mt-5" th:utext="#{need.connection}"></h1>
+			
+			<div sec:authorize="isAuthenticated()">
+				<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{user.home}, true)"></div>
+			</div>
+			
+			<div sec:authorize="!isAuthenticated()">
+				<div class="image-container">
+	                <img class="col-12 m-0 p-0" th:src="@{/images/start.png} " />
+	                
+	                <div class="col-12 image-container-centered-top m-0 p-0 pt-2 mt-3">
+						<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
+	                </div>
+	                
+	                <div class="container-fluid col-8 image-container-centered text-center">				
+						<div class="row justify-content-center mb-4">
+							<h1 class="align-center mt-5" th:utext="#{need.connection}"></h1>
+						</div>
+						
+						<div th:if="${loginError}" class="row justify-content-center mb-4">
+							<p class="error" th:utext="#{connection.error}"></p>
+						</div>
+						
+						<form th:action="@{/login}" method="post" class="px-5 pt-3 pb-5 justify-content-center font">
+							<div class="row justify-content-center pb-3">
+			                    <div class="row col-12 justify-content-center">
+									<label class="font-weight-bold" th:utext="#{connection.username}"></label>
+			                    </div>
+			                    <div class="row col-4 justify-content-center">
+									<input id="username" name="username" autofocus="autofocus" class="col-12" type="text"/>
+			                    </div>
+			                </div>
+			                <div class="row justify-content-center pb-3">
+			                    <div class="row col-12 justify-content-center">
+									<label class="font-weight-bold" th:utext="#{connection.pass}"></label><br/>
+			                    </div>
+			                    <div class="row col-4">
+									<input id="password" name="password" class="col-12" type="password"/>
+			                    </div>
+			                </div>
+							<div class="row justify-content-center p-3">
+			                    <button class="col-3" type="submit" id="" th:utext="#{connection.connection}">
+			                        
+			                    </button>
+			                </div>
+						</form>
 					</div>
-					
-					<div th:if="${loginError}" class="row justify-content-center mb-4">
-						<p class="error" th:utext="#{connection.error}"></p>
-					</div>
-					
-					<form th:action="@{/login}" method="post" class="px-5 pt-3 pb-5 justify-content-center font">
-						<div class="row justify-content-center pb-3">
-		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{connection.username}"></label>
-		                    </div>
-		                    <div class="row col-4 justify-content-center">
-								<input id="username" name="username" autofocus="autofocus" class="col-12" type="text"/>
-		                    </div>
-		                </div>
-		                <div class="row justify-content-center pb-3">
-		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{connection.pass}"></label><br/>
-		                    </div>
-		                    <div class="row col-4">
-								<input id="password" name="password" class="col-12" type="password"/>
-		                    </div>
-		                </div>
-						<div class="row justify-content-center p-3">
-		                    <button class="col-3" type="submit" id="" th:utext="#{connection.connection}">
-		                        
-		                    </button>
-		                </div>
-					</form>
-				</div>
-            </div>
+	            </div>
+			</div>
 			
 			<div sec:authorize="isAuthenticated()">
 				

@@ -7,7 +7,6 @@
 		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
 		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
 		<link th:rel="stylesheet" th:href="@{/css/IndexStyle.css}"/>
-		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
 		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
 		<title th:utext="#{title}"></title>
 	</head>
@@ -15,32 +14,38 @@
 	<body>
 		<div class="container-fluid m-0 p-0 bg-info">
 					
-			<div class="image-container border-bottom border-dark">
-                <img class="col-12 m-0 p-0 mt-4" th:src="@{/images/admin.png} " />
-                
-                <div class="col-12 image-container-centered-top m-0 p-0 pt-3 mt-3">
-					<div th:replace="/fragments/basic/nav-bar.html :: nav"></div>
-                </div>
-                
-                <div class="container-fluid col-8 image-container-centered text-center" sec:authorize="isAuthenticated()">				
-					<div class="row justify-content-center mb-4">
-						<h1 class="align-center mt-4 pt-5" th:utext="#{admin.user.list}"></h1>
-					</div>
-				</div>
-            </div>
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.user.list}, true)"></div>
 			
-			<div class="p-0 mt-4 ml-4 mr-4 bg-white border-top border-dark" sec:authorize="isAuthenticated()">
+			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
 			 
-      			<div sec:authorize="hasRole('ROLE_ADMIN')">
-					<table class="table table-striped m-0" border="1">
+      			<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-info">
+      				<div th:if="${creationOK}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.creation.ok}"></p>
+					</div>
+					<div th:if="${updateOK}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.update.ok}"></p>
+					</div>
+					<div th:if="${deleteOK}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.delete.ok}"></p>
+					</div>
+      				<div class="row pl-4 pb-3 bg-info">
+      					<form th:action="@{/admin/user/new}"><button type="submit" class="font-weight-bold btn btn-success pr-3 mr-3" th:utext="#{button.create}"></button></form>
+      					<form th:action="@{/admin/users}" class="input-group col-6">
+						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{admin.user.list.bysearch}">
+						  	<div class="input-group-append">
+						    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.search}"></button>
+						  	</div>
+						</form>
+      				</div>
+					<table class="table table-striped m-0 border-top border-dark bg-white" border="1">
 						<thead>
 							<tr>
-								<th>ID</th>
-								<th>Nom d'utilisateur</th>
-								<th>Rôles</th>
-								<th>Mot de passe</th>
-								<th>Date d'inscription</th>
-								<th>Edit</th>
+								<th th:utext="#{admin.user.list.id}"></th>
+								<th th:utext="#{admin.user.list.login}"></th>
+								<th th:utext="#{admin.user.list.role}"></th>
+								<th th:utext="#{admin.user.list.pass}"></th>
+								<th th:utext="#{admin.user.list.entry}"></th>
+								<th th:utext="#{admin.user.list.options}"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,8 +56,8 @@
 								<th th:utext="${user.pass}">...</th>
 								<th th:utext="${user.entry}">...</th>
 								<th>
-									<a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a>
-					            	<a th:href="@{/user/delete/{id}(id=${user.id})}">Delete</a>
+									<a th:utext="#{admin.options.edit}" th:href="@{/admin/users/{id}/edit(id=${user.id})}"></a>
+					            	<a th:utext="#{admin.options.delete}" th:href="@{/admin/users/{id}/delete(id=${user.id})}"></a>
 					            </th>
 							</tr>
 						</tbody>
@@ -60,7 +65,7 @@
 					<div class="pt-4 pb-5 row justify-content-center bg-info">
 						<h5>
 							<a class="nav-link" th:href="@{/index}" th:utext="#{button.backindex}">
-								Revenir à l'accueil
+								
 							</a>
 						</h5>
 					</div>

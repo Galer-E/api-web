@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/SpaceStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+	
+    <body class="m-0 p-0">
+    
+   		<div class="container-fluid m-0 p-0 bg-light">
+    
+			<div sec:authorize="isAuthenticated()">
+				<div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{user.admin}, true)"></div>
+				<div sec:authorize="hasRole('ROLE_USER')" th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{user.space}, true)"></div>
+				
+				<div class="container-fluid" sec:authorize="hasRole('ROLE_ADMIN')">	
+					
+					<div class="row justify-content-center text-center m-0 p-0 mb-3 mt-5">
+			          	<div class="col-1 m-0 p-0">
+			                <img class="col-9 m-0 p-0" th:src="@{/images/unknow.png} " />
+			          	</div>
+			          	<h3 class="col-5 align-self-center category-container pb-3 pt-3">
+			            	<a class="category-title" th:href="@{/admin/users}" th:utext="#{user.space.admin.users}">
+			             		
+			            	</a>
+			          	</h3>
+			        </div>
+			        <div class="row justify-content-center text-center m-0 p-0 mb-3 mt-4">
+			          	<div class="col-1 m-0 p-0">
+			                <img class="col-9 m-0 p-0" th:src="@{/images/unknow.png} " />
+			          	</div>
+			          	<h3 class="col-5 align-self-center category-container pb-3 pt-3">
+			            	<a class="category-title" th:href="@{/admin/roles}" th:utext="#{user.space.admin.roles}">
+			             		
+			            	</a>
+			          	</h3>
+			        </div>
+			        <div class="row justify-content-center text-center m-0 p-0 mb-3 mt-4">
+			          	<div class="col-1 m-0 p-0">
+			                <img class="col-9 m-0 p-0" th:src="@{/images/unknow.png} " />
+			          	</div>
+			          	<h3 class="col-5 align-self-center category-container pb-3 pt-3">
+			            	<a class="category-title" th:href="@{/admin/images}" th:utext="#{user.space.admin.images}">
+			             		
+			            	</a>
+			          	</h3>
+			        </div>
+			        <div class="row justify-content-center text-center m-0 p-0 mb-3 mt-4">
+			          	<div class="col-1 m-0 p-0">
+			                <img class="col-9 m-0 p-0" th:src="@{/images/unknow.png} " />
+			          	</div>
+			          	<h3 class="col-5 align-self-center category-container pb-3 pt-3">
+			            	<a class="category-title" th:href="@{/admin/categories}" th:utext="#{user.space.admin.categories}">
+			             		
+			            	</a>
+			          	</h3>
+			        </div>
+			        
+				</div>
+	        
+	        </div>
+			
+		</div>
+
+    </body>
+
+</html>
