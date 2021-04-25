@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+		
+	<body class="bg-info">
+		<div class="container-fluid m-0 p-0">
+					
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.image.deletion}, true)"></div>
+			
+			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
+			 
+      			<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-info">
+      				
+      				<form th:action="@{/admin/images/{id}/delete(id=${image.id})}" method="post" th:object="${image}" class="px-5 pt-3 pb-5 justify-content-center font">
+						<div class="row justify-content-center mt-5 mb-5 font">
+							<h3 th:utext="#{admin.image.deletion.validation}">
+							
+							</h3>
+						</div>
+						<div class="row justify-content-center p-3">
+		                    <button class="col-3" type="submit" id="" th:utext="#{admin.deletion}">
+		                        
+		                    </button>
+		                </div>
+					</form>
+      				
+					<div class="pt-4 pb-5 row justify-content-center bg-info">
+						<h5 class="mb-5 pb-5">
+							<a class="nav-link" th:href="@{/admin/images}" th:utext="#{button.backindex}">
+								
+							</a>
+						</h5>
+					</div>
+					
+				</div>
+			
+			</div>
+			
+		</div>
+   </body>
+</html>

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -22,14 +23,26 @@ public class Role {
 
 	@Column(name = "Label")
 	@Size(max = 35)
+	@NotNull
 	private String label;
 	
 	@Column(name = "Level")
+	@NotNull
 	private Short level;
 	
 	@ManyToMany(mappedBy = "roles")
     private List<User> users;
-
+	
+	public String getUsersToString() {
+		String to = "- ";
+		
+		if (users != null && !users.isEmpty()) {
+			for (User u : users)
+				to += u.getLogin() + " - ";
+		}
+		return to;
+	}
+	
 	public Long getId() {
 		return id;
 	}
