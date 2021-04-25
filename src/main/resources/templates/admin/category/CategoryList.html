@@ -14,7 +14,7 @@
 	<body>
 		<div class="container-fluid m-0 p-0 bg-info">
 					
-			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.user.list}, true)"></div>
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.category.list}, true)"></div>
 			
 			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
 			 
@@ -25,13 +25,10 @@
 					<div th:if="${updateOK}" class="row justify-content-center mb-4 bg-info">
 						<p class="error" th:utext="#{admin.update.ok}"></p>
 					</div>
-					<div th:if="${deleteOK}" class="row justify-content-center mb-4 bg-info">
-						<p class="error" th:utext="#{admin.delete.ok}"></p>
-					</div>
       				<div class="row pl-4 pb-3 bg-info">
-      					<form th:action="@{/admin/user/new}"><button type="submit" class="font-weight-bold btn btn-success pr-3 mr-3" th:utext="#{button.create}"></button></form>
-      					<form th:action="@{/admin/users}" class="input-group col-6">
-						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{admin.user.list.bysearch}">
+      					<form th:action="@{/admin/category/new}"><button type="submit" class="font-weight-bold btn btn-success pr-3 mr-3" th:utext="#{button.create}"></button></form>
+      					<form th:action="@{/admin/categories}" class="input-group col-6">
+						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{admin.category.list.bysearch}">
 						  	<div class="input-group-append">
 						    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.search}"></button>
 						  	</div>
@@ -41,23 +38,15 @@
 						<thead>
 							<tr>
 								<th th:utext="#{admin.id}"></th>
-								<th th:utext="#{admin.user.list.login}"></th>
-								<th th:utext="#{admin.user.list.role}"></th>
-								<th th:utext="#{admin.user.list.pass}"></th>
-								<th th:utext="#{admin.user.list.entry}"></th>
-								<th th:utext="#{admin.user.list.options}"></th>
+								<th th:utext="#{admin.label}"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="user : ${users}">
-								<th scope="row" th:utext="${user.id}">...</th>
-								<th th:utext="${user.login}">...</th>
-								<th th:utext="${user.getStringRoles()}">...</th>
-								<th th:utext="${user.pass}">...</th>
-								<th th:utext="${user.entry}">...</th>
+							<tr th:each="category : ${categories}">
+								<th scope="row" th:utext="${category.id}">...</th>
+								<th th:utext="${category.label}">...</th>
 								<th>
-									<a th:utext="#{admin.options.edit}" th:href="@{/admin/users/{id}/edit(id=${user.id})}"></a>
-					            	<a th:utext="#{admin.options.delete}" th:href="@{/admin/users/{id}/delete(id=${user.id})}"></a>
+									<a th:utext="#{admin.options.edit}" th:href="@{/admin/categories/{id}/edit(id=${category.id})}"></a>
 					            </th>
 							</tr>
 						</tbody>

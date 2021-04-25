@@ -14,44 +14,34 @@
 	<body>
 		<div class="container-fluid m-0 p-0 bg-info">
 					
-			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.user.creation}, true)"></div>
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.role.creation}, true)"></div>
 			
 			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
 			 
       			<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-info">
       				
       				<div th:if="${creationError}" class="row justify-content-center mb-4 bg-info">
-						<p class="error" th:utext="#{admin.creation.user.error}"></p>
+						<p class="error" th:utext="#{admin.creation.role.error}"></p>
 					</div>
 					<div th:if="${existsError}" class="row justify-content-center mb-4 bg-info">
-						<p class="error" th:utext="#{admin.creation.user.exist}"></p>
+						<p class="error" th:utext="#{admin.creation.role.exist}"></p>
 					</div>
       				
-      				<form th:if="${creation}" th:action="@{/admin/users}" method="post" th:object="${user}" class="px-5 pt-3 pb-5 justify-content-center font">
+      				<form th:if="${creation}" th:action="@{/admin/roles}" method="post" th:object="${role}" class="px-5 pt-3 pb-5 justify-content-center font">
 						<div class="row justify-content-center pb-3">
 		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.login}"></label>
+								<label class="font-weight-bold" th:utext="#{admin.role.list.label}"></label>
 		                    </div>
 		                    <div class="row col-4 justify-content-center">
-								<input th:field="*{login}" max="50" autofocus="autofocus" class="col-12" type="text"/>
+								<input th:field="*{label}" max="35" autofocus="autofocus" class="col-12" type="text"/>
 		                    </div>
 		                </div>
 		                <div class="row justify-content-center pb-3">
 		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.pass}"></label><br/>
+								<label class="font-weight-bold" th:utext="#{admin.role.list.level}"></label>
 		                    </div>
-		                    <div class="row col-4">
-								<input th:field="*{pass}" class="col-12" type="password"/>
-		                    </div>
-		                </div>
-		                <div class="row justify-content-center pb-3">
-		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.role}"></label><br/>
-		                    </div>
-		                    <div class="row col-4">
-								<select th:field="*{roles}" class="col-12">
-								    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.label}" />
-								</select>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{level}" max="35" autofocus="autofocus" class="col-12" type="number"/>
 		                    </div>
 		                </div>
 						<div class="row justify-content-center p-3">
@@ -61,31 +51,21 @@
 		                </div>
 					</form>
 
-					<form th:if="${update}" th:action="@{/admin/users/{id}(id=${user.id})}" th:method="post" th:object="${user}" class="px-5 pt-3 pb-5 justify-content-center font">
+					<form th:if="${update}" th:action="@{/admin/roles/{id}(id=${role.id})}" th:method="post" th:object="${role}" class="px-5 pt-3 pb-5 justify-content-center font">
 						<div class="row justify-content-center pb-3">
 		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.login}"></label>
+								<label class="font-weight-bold" th:utext="#{admin.label}"></label>
 		                    </div>
 		                    <div class="row col-4 justify-content-center">
-								<input th:field="*{login}" max="50" autofocus="autofocus" class="col-12" type="text"/>
+								<input th:field="*{label}" max="35" autofocus="autofocus" class="col-12" type="text"/>
 		                    </div>
 		                </div>
 		                <div class="row justify-content-center pb-3">
 		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.pass}"></label><br/>
+								<label class="font-weight-bold" th:utext="#{admin.role.list.level}"></label>
 		                    </div>
-		                    <div class="row col-4">
-								<input th:field="*{pass}" class="col-12" type="password"/>
-		                    </div>
-		                </div>
-		                <div class="row justify-content-center pb-3">
-		                    <div class="row col-12 justify-content-center">
-								<label class="font-weight-bold" th:utext="#{admin.user.list.role}"></label><br/>
-		                    </div>
-		                    <div class="row col-4">
-								<select th:field="*{roles}" class="col-12">
-								    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.label}" />
-								</select>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{level}" max="35" autofocus="autofocus" class="col-12" type="number"/>
 		                    </div>
 		                </div>
 						<div class="row justify-content-center p-3">
@@ -97,7 +77,7 @@
       				
 					<div class="pt-4 pb-5 row justify-content-center bg-info">
 						<h5>
-							<a class="nav-link" th:href="@{/admin/users}" th:utext="#{button.backindex}">
+							<a class="nav-link" th:href="@{/admin/roles}" th:utext="#{button.backindex}">
 								
 							</a>
 						</h5>

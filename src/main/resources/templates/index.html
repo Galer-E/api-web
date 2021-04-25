@@ -17,6 +17,21 @@
 			
 			<div sec:authorize="isAuthenticated()">
 				<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{user.home}, true)"></div>
+				
+				<div class="container-fluid">
+					<div class="row justify-content-center mb-5 mt-4">
+						<h3 class="border-bottom border-dark">
+							Dernière images ajoutées
+						</h3>
+					</div>
+					
+					<div class="row m-0 p-0 justify-content-center">
+						<div th:each="image : ${images}" class="col-3">
+							<img class="img-thumbnail p-0" th:src="@{/shared/image/{id}(id=${image.id})}" />
+							<p class="text-justify" th:text="${image.title}"></p>
+						</div>
+					</div>
+				</div>
 			</div>
 			
 			<div sec:authorize="!isAuthenticated()">

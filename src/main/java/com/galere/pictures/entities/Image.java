@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "user")
+@Table(name = "image")
 public class Image {
 	
 	@Id
@@ -43,17 +44,26 @@ public class Image {
 	private String tags;
 	
 	@Column(name = "Content")
-	private String Content;
+	private String content;
 	
 	@Column(name = "Date")
 	@NotNull
 	private LocalDate date;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "image_category", 
       joinColumns = @JoinColumn(name = "IdImage", referencedColumnName = "Id"), 
       inverseJoinColumns = @JoinColumn(name = "IdCategory", referencedColumnName = "Id"))
 	private List<Category> categories;
+	
+	public String getStringCategories() {
+		String to = "";
+		if (categories != null && !categories.isEmpty()) {
+			for (Category cat : categories)
+				to += cat.getLabel() + " <br/> ";
+		}
+		return to;
+	}
 	
 	public Long getId() {
 		return id;
@@ -96,11 +106,11 @@ public class Image {
 	}
 
 	public String getContent() {
-		return Content;
+		return content;
 	}
 
 	public void setContent(String content) {
-		Content = content;
+		this.content = content;
 	}
 
 	public LocalDate getDate() {

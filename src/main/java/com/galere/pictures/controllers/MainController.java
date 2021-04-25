@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.galere.pictures.config.ApplicationEndHandle;
 import com.galere.pictures.services.IEncryptionService;
+import com.galere.pictures.services.IImageService;
 import com.galere.pictures.services.IUserService;
 
 @Controller
@@ -22,6 +23,9 @@ public class MainController {
     
     @Autowired
     private IEncryptionService encryption;
+    
+    @Autowired
+    private IImageService images;
 	
     // Test
 	@RequestMapping(value = "/admin/prepare-end", method = RequestMethod.GET)
@@ -46,6 +50,9 @@ public class MainController {
     // Home / Login page
 	@RequestMapping(value = { "/", "index", "login" }, method = RequestMethod.GET)
     public String home(Model model) {
+		
+		model.addAttribute("images", images.getRepository().findAll());
+		
         return "index";
     }
 	

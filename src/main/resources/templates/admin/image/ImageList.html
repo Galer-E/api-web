@@ -14,7 +14,7 @@
 	<body>
 		<div class="container-fluid m-0 p-0 bg-info">
 					
-			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.user.list}, true)"></div>
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.image.list}, true)"></div>
 			
 			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
 			 
@@ -29,9 +29,12 @@
 						<p class="error" th:utext="#{admin.delete.ok}"></p>
 					</div>
       				<div class="row pl-4 pb-3 bg-info">
-      					<form th:action="@{/admin/user/new}"><button type="submit" class="font-weight-bold btn btn-success pr-3 mr-3" th:utext="#{button.create}"></button></form>
-      					<form th:action="@{/admin/users}" class="input-group col-6">
-						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{admin.user.list.bysearch}">
+      					<form enctype="multipart/form-data" th:action="@{/admin/image/new}" method="post">
+      						<input type="file" th:name="multipartImage" accept="image/*" class="form-control-file" required/>
+      						<button type="submit" class="font-weight-bold btn btn-success pr-3 mr-3" th:utext="#{button.create}"></button>
+      					</form>
+      					<form th:action="@{/admin/images}" class="input-group col-6">
+						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{admin.image.list.bysearch}">
 						  	<div class="input-group-append">
 						    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.search}"></button>
 						  	</div>
@@ -41,23 +44,28 @@
 						<thead>
 							<tr>
 								<th th:utext="#{admin.id}"></th>
-								<th th:utext="#{admin.user.list.login}"></th>
-								<th th:utext="#{admin.user.list.role}"></th>
-								<th th:utext="#{admin.user.list.pass}"></th>
-								<th th:utext="#{admin.user.list.entry}"></th>
-								<th th:utext="#{admin.user.list.options}"></th>
+								<th th:utext="#{admin.image.list.title}"></th>
+								<th th:utext="#{admin.image.list.description}"></th>
+								<th th:utext="#{admin.image.list.url}"></th>
+								<th th:utext="#{admin.image.list.content}"></th>
+								<th th:utext="#{admin.image.list.tags}"></th>
+								<th th:utext="#{admin.image.list.categories}"></th>
+								<th th:utext="#{admin.image.list.date}"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="user : ${users}">
-								<th scope="row" th:utext="${user.id}">...</th>
-								<th th:utext="${user.login}">...</th>
-								<th th:utext="${user.getStringRoles()}">...</th>
-								<th th:utext="${user.pass}">...</th>
-								<th th:utext="${user.entry}">...</th>
+							<tr th:each="image : ${images}">
+								<th scope="row" th:utext="${image.id}">...</th>
+								<th th:utext="${image.title}">...</th>
+								<th th:utext="${image.description}">...</th>
+								<th th:utext="${image.url}">...</th>
+								<th th:utext="${image.content}">...</th>
+								<th th:utext="${image.tags}">...</th>
+								<th th:utext="${image.getStringCategories()}">...</th>
+								<th th:utext="${image.date}">...</th>
 								<th>
-									<a th:utext="#{admin.options.edit}" th:href="@{/admin/users/{id}/edit(id=${user.id})}"></a>
-					            	<a th:utext="#{admin.options.delete}" th:href="@{/admin/users/{id}/delete(id=${user.id})}"></a>
+									<a th:utext="#{admin.options.edit}" th:href="@{/admin/images/{id}/edit(id=${image.id})}"></a>
+					            	<a th:utext="#{admin.options.delete}" th:href="@{/admin/images/{id}/delete(id=${image.id})}"></a>
 					            </th>
 							</tr>
 						</tbody>

@@ -32,7 +32,17 @@ public class Role {
 	
 	@ManyToMany(mappedBy = "roles")
     private List<User> users;
-
+	
+	public String getUsersToString() {
+		String to = "- ";
+		
+		if (users != null && !users.isEmpty()) {
+			for (User u : users)
+				to += u.getLogin() + " - ";
+		}
+		return to;
+	}
+	
 	public Long getId() {
 		return id;
 	}

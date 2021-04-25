@@ -24,6 +24,11 @@
     background-color: #524E5F;
 }
 
+.check {
+	margin-top: 1%;
+	margin-right: 2%;
+}
+
 nav h5 {
     display: inline;
 }
