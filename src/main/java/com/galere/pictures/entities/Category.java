@@ -49,7 +49,7 @@ public class Category {
 		return images;
 	}
 
-	public void setLevel(List<Image> images) {
+	public void setImages(List<Image> images) {
 		this.images = images;
 	}
 
