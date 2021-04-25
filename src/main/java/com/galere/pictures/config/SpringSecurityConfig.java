@@ -48,13 +48,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {      
-        for (User u : users.getRepository().findAll()) {
-        	auth.inMemoryAuthentication()
-	    		.withUser(u.getLogin())
-	    		.password("{noop}" + encryption.decrypt(u.getPass()))
-	    		.roles(u.getHeightRole().getLevel() > 0 ? "ADMIN" : "USER");
-        }
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {   
+    	if (!users.getRepository().findAll().isEmpty()) {
+	        for (User u : users.getRepository().findAll()) {
+	        	auth.inMemoryAuthentication()
+		    		.withUser(u.getLogin())
+		    		.password("{noop}" + encryption.decrypt(u.getPass()))
+		    		.roles(u.getHeightRole().getLevel() > 0 ? "ADMIN" : "USER");
+	        }
+    	} else {
+    		auth.inMemoryAuthentication()
+	    		.withUser("admin")
+	    		.password("{noop}" + "admin")
+	    		.roles("ADMIN");
+    	}
         auth.userDetailsService(inMemoryUserDetailsManager());
         ApplicationEndHandle.reloader = new ReloadKeyThread(encryption);
 //        ApplicationEndHandle.reloader.start();
