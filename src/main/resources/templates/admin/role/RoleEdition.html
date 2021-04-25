@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+		
+	<body>
+		<div class="container-fluid m-0 p-0 bg-info">
+					
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.role.creation}, true)"></div>
+			
+			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
+			 
+      			<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-info">
+      				
+      				<div th:if="${creationError}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.creation.role.error}"></p>
+					</div>
+					<div th:if="${existsError}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.creation.role.exist}"></p>
+					</div>
+      				
+      				<form th:if="${creation}" th:action="@{/admin/roles}" method="post" th:object="${role}" class="px-5 pt-3 pb-5 justify-content-center font">
+						<div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.role.list.label}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{label}" max="35" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.role.list.level}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{level}" max="35" autofocus="autofocus" class="col-12" type="number"/>
+		                    </div>
+		                </div>
+						<div class="row justify-content-center p-3">
+		                    <button class="col-3" type="submit" id="" th:utext="#{admin.creation}">
+		                        
+		                    </button>
+		                </div>
+					</form>
+
+					<form th:if="${update}" th:action="@{/admin/roles/{id}(id=${role.id})}" th:method="post" th:object="${role}" class="px-5 pt-3 pb-5 justify-content-center font">
+						<div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.label}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{label}" max="35" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.role.list.level}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{level}" max="35" autofocus="autofocus" class="col-12" type="number"/>
+		                    </div>
+		                </div>
+						<div class="row justify-content-center p-3">
+		                    <button class="col-3" type="submit" id="" th:utext="#{admin.update}">
+		                        
+		                    </button>
+		                </div>
+					</form>
+      				
+					<div class="pt-4 pb-5 row justify-content-center bg-info">
+						<h5>
+							<a class="nav-link" th:href="@{/admin/roles}" th:utext="#{button.backindex}">
+								
+							</a>
+						</h5>
+					</div>
+					
+				</div>
+			
+			</div>
+			
+		</div>
+   </body>
+</html>

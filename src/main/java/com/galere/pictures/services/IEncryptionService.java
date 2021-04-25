@@ -6,5 +6,7 @@ public interface IEncryptionService {
 	public String encrypt(String text) throws Exception;
 	
 	public void reloadKey();
+	public void loadInitialKey();
+	public void test();
 	
 }

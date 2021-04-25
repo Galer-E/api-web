@@ -1,9 +1,8 @@
 package com.galere.pictures.entities;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -27,20 +27,22 @@ public class User {
 	
 	@Column(name = "Login")
 	@Size(max = 50)
+	@NotNull
 	private String login;
 	
 	@Column(name = "Pass")
-	@Size(max = 50)
+	@NotNull
 	private String pass;
 
 	@Column(name = "Entry")
 	private LocalDate entry;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", 
       joinColumns = @JoinColumn(name = "IdUser", referencedColumnName = "Id"), 
       inverseJoinColumns = @JoinColumn(name = "IdRole", referencedColumnName = "Id"))
-	private List<Role> roles;
+	@NotNull
+	private Set<Role> roles;
 	
 	public void hidePass() {
 		setPass("******");
@@ -54,7 +56,7 @@ public class User {
 		this.id = id;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 	
@@ -65,7 +67,7 @@ public class User {
 		return stringRoles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 

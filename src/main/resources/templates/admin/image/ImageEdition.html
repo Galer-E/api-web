@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+		
+		<input type="checkbox" name="roles"
+            th:each="role : ${allRoles}"
+            th:text="${role.name}"
+            th:value="${role.id}"
+            th:field="*{roles}"
+        />
+		
+		
+	<body>
+		<div class="container-fluid m-0 p-0 bg-info">
+					
+			<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{admin.image.creation}, true)"></div>
+			
+			<div class="p-0 mt-4 ml-4 mr-4 bg-white" sec:authorize="isAuthenticated()">
+			 
+      			<div sec:authorize="hasRole('ROLE_ADMIN')" class="bg-info">
+      				
+      				<div th:if="${creationError}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.creation.image.error}"></p>
+					</div>
+					<div th:if="${existsError}" class="row justify-content-center mb-4 bg-info">
+						<p class="error" th:utext="#{admin.creation.image.exist}"></p>
+					</div>
+      				
+      				<div class="row justify-content-center mb-4 bg-info">
+						<img class="col-2" th:src="@{/shared/image/{id}(id=${image.id})}"/>
+					</div>
+      				
+      				<form th:if="${creation}" th:action="@{/admin/images/{id}(id=${image.id})}" method="post" th:object="${image}" class="px-5 pt-3 pb-5 justify-content-center font">
+						<div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.title}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{title}" max="100" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.description}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{description}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.content}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{content}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.tags}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{tags}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.categories}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input class="check" type="checkbox" name="categories"
+									th:each="category : ${categories}"
+						            th:utext="${category.label}"
+						            th:value="${category.id}"
+						            th:field="*{categories}"
+						        />
+							</div>
+		                </div>
+		                <div th:if="${withPerson}" class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<input class="check" type="checkbox" name="categories"
+						            required
+						        />
+								<label class="font-weight-bold mt-2" th:utext="#{admin.image.right.validation}"></label>
+		                    </div>
+		                </div>
+						<div class="row justify-content-center p-3">
+		                    <button class="col-3" type="submit" id="" th:utext="#{admin.creation}">
+		                        
+		                    </button>
+		                </div>
+					</form>
+
+					<form th:if="${update}" th:action="@{/admin/images/{id}(id=${image.id})}" th:method="post" th:object="${image}" class="px-5 pt-3 pb-5 justify-content-center font">
+						<div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.title}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{title}" max="100" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.description}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{description}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.content}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{content}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.tags}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input th:field="*{tags}" autofocus="autofocus" class="col-12" type="text"/>
+		                    </div>
+		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.categories}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input class="check" type="checkbox" name="categories"
+						            th:each="category : ${categories}"
+						            th:text="${category.label}"
+						            th:value="${category.id}"
+						            th:field="*{categories}"
+						        />
+		                    </div>
+		                </div>
+						<div class="row justify-content-center p-3">
+		                    <button class="col-3" type="submit" id="" th:utext="#{admin.update}">
+		                        
+		                    </button>
+		                </div>
+					</form>
+      				
+					<div class="pt-4 pb-5 row justify-content-center bg-info">
+						<h5>
+							<a class="nav-link" th:href="@{/admin/images}" th:utext="#{button.backindex}">
+								
+							</a>
+						</h5>
+					</div>
+					
+				</div>
+			
+			</div>
+			
+		</div>
+   </body>
+</html>

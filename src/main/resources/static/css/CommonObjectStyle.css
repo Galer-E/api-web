@@ -24,8 +24,22 @@
     background-color: #524E5F;
 }
 
+.check {
+	margin-top: 1%;
+	margin-right: 2%;
+}
+
 nav h5 {
     display: inline;
+}
+
+.button-search {
+	cursor: pointer;
+	border: 2px solid lightgray;
+}
+
+.button-search:hover {
+	border: 2px solid gray;
 }
 
 .support-button {
