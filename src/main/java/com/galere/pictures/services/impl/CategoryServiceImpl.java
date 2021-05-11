@@ -11,9 +11,26 @@ import com.galere.pictures.entities.Category;
 import com.galere.pictures.repositories.CategoryRepository;
 import com.galere.pictures.services.ICategoryService;
 
+/**
+ * <b>
+ * 	Implémentation du service ICategoryService.
+ * </b>
+ * 
+ * @see ICategoryService
+ * @see Category
+ * 
+ * @author Ilias HATTANE
+ * @version 1.0
+ *
+ */
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
+	/**
+	 * <b> Instance du repository CategoryRepository. </b>
+	 * 
+	 * @see CategoryRepository
+	 */
 	@Autowired
 	private CategoryRepository repository;
 	

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+		
+		<footer class="container-fluid footer-body pt-3 pb-3" th:fragment="footer">
+			<div class="row justify-content-center">
+				
+				<div class="font">
+				    <div class="container-fluid m-0 p-0">
+				      <div class="row justify-content-center m-0 p-0 pt-3">
+				
+				        <div class="col-4">
+				          <h5 class="footer-title">
+				            Galer-E
+				          </h5>
+				          <p>
+				            Galer-E est une bibliothèque d'image en ligne. Elle
+				            permet aux utilisateurs de retrouver une image et de
+				            la tlécharger dans différents formats.
+				          </p>
+				        </div>
+				
+				        <div class="col-4">
+				        </div>
+				
+				        <div class="col-4 text-center">
+				          <h5 class="footer-title">
+				            LIENS
+				          </h5>
+				          <p>
+				             <a class="nav-link" th:href="@{/index}" th:text="#{nav.home}"></a><br/>
+				             <a class="nav-link" th:href="@{/shared}" th:text="#{nav.list}"></a><br/>
+				             <a class="nav-link" th:href="@{/user/me}" th:text="#{footer.account}"></a><br/>
+				             <a class="nav-link" th:href="@{/logout}" th:text="#{nav.disconnection}"></a><br/>
+				          </p>
+				        </div>
+				
+				      </div>
+				    </div>
+				  </div>
+				
+			</div>
+		</footer>
+	
+</html>

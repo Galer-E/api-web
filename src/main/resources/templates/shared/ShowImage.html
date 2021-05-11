@@ -1,17 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+	
 	<head>
 		<meta charset="UTF-8" />
 		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/SpaceStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
 		<title th:utext="#{title}"></title>
 	</head>
-		
-	<body>
-		<div class="container-fluid m-0 p-0">
-			
-			<img th:src="@{/shared/image/{id}(id=${image.id})}"/>
 	
+    <body class="m-0 p-0">
+    
+   		<div class="container-fluid m-0 p-0 bg-light">
+    		
+    		<div sec:authorize="isAuthenticated()">
+				<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(${image.title}, true)"></div>
+					
+					<div class="container-fluid">
+						<div class="row justify-content-center m-0 p-0 font mt-4 pb-4">
+							
+							<div class="col-3">
+								<img th:src="@{/shared/image/{id}(id=${image.id})}"/>
+							</div>
+							
+							<div class="col-2"></div>
+							
+							<div class="col-5">
+								<p th:text="#{admin.image.list.title} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.title}"></p>
+								<p th:text="#{admin.image.list.description} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.description}"></p>
+								<p th:text="#{admin.image.list.tags} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.tags}"></p>
+								<p th:text="#{admin.image.list.content} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.content}"></p>
+								<p th:text="#{admin.image.list.date} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.date}"></p>
+								<p th:text="#{admin.image.list.categories} + ' : '"></p>
+								<p class="pl-5 font-weight-bold" th:text="${image.getStringCategoriesOnly}"></p>
+							</div>
+							
+						</div>
+						
+						<div class="row justify-content-center m-0 p-0">
+							
+							<div class="col-4">
+								<div class="row justify-content-center mt-4 p-0">
+									<h5 class="text-center" th:text="#{shared.download.title.particular}"></h5>						
+								</div>
+								<div class="row justify-content-center mt-3 pb-5">
+									<form th:action="@{/shared/image/{id}(id=${image.id})}" class="input-group">
+									  	<input type="number" class="form-control" th:name="width" th:placeholder="#{shared.download.width}">
+									  	<input class="form-control col-1 text-center" disabled>
+									  	<input type="number" class="form-control" th:name="height" th:placeholder="#{shared.download.height}">
+									  	<div class="input-group-append">
+									    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.download}"></button>
+									  	</div>
+									</form>
+								</div>
+							</div>
+							
+							<div class="col-1"></div>
+							
+							<div class="col-4">
+								<div class="row justify-content-center mt-4 p-0">
+									<h5 class="text-center" th:text="#{shared.download.title.group}"></h5>						
+								</div>
+								<div class="row justify-content-center mt-3 pb-5">
+									<form th:action="@{/shared/image/group/{id}(id=${image.id})}" class="input-group col-3">
+									  	<div class="input-group-append">
+									    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.download}"></button>
+									  	</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			
+				</div>
+			</div>
+			
 		</div>
-   </body>
+
+    </body>
+    
+	<div th:replace="/fragments/basic/footer.html :: footer"></div>
 </html>
