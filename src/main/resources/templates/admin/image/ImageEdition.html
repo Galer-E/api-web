@@ -85,6 +85,16 @@
 						        />
 							</div>
 		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.enabled}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input class="check" type="checkbox" name="enabled"
+						            th:field="*{enabled}"
+						        />
+		                    </div>
+		                </div>
 		                <div th:if="${withPerson}" class="row justify-content-center pb-3">
 		                    <div class="row col-12 justify-content-center">
 								<input class="check" type="checkbox" name="categories"
@@ -146,6 +156,16 @@
 						        />
 		                    </div>
 		                </div>
+		                <div class="row justify-content-center pb-3">
+		                    <div class="row col-12 justify-content-center">
+								<label class="font-weight-bold" th:utext="#{admin.image.list.enabled}"></label>
+		                    </div>
+		                    <div class="row col-4 justify-content-center">
+								<input class="check" type="checkbox" name="enabled"
+						            th:field="*{enabled}"
+						        />
+		                    </div>
+		                </div>
 						<div class="row justify-content-center p-3">
 		                    <button class="col-3" type="submit" id="" th:utext="#{admin.update}">
 		                        
@@ -167,4 +187,6 @@
 			
 		</div>
    </body>
+   
+   <div th:replace="/fragments/basic/footer.html :: footer"></div>
 </html>

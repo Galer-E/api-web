@@ -1,0 +1,8 @@
+com.galere.pictures
+com.galere.pictures.config
+com.galere.pictures.config.core
+com.galere.pictures.controllers
+com.galere.pictures.entities
+com.galere.pictures.repositories
+com.galere.pictures.services
+com.galere.pictures.services.impl

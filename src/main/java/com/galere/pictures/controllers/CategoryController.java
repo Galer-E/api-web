@@ -1,5 +1,6 @@
 package com.galere.pictures.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,14 +18,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.galere.pictures.entities.Category;
 import com.galere.pictures.services.ICategoryService;
 
+/**
+ * <b>
+ * 	Controller offrant différentes routes pour gérer les catégories d'image en base de données.
+ * </b>
+ * 
+ * @see Category
+ * @see ICategoryService
+ * 
+ * @author Ilias HATTANE
+ * @version 1.0
+ *
+ */
 @Controller
 public class CategoryController {
 	
+	/**
+	 * <b> Implémentation du service ICategoryService. </b>
+	 */
     @Autowired
     private ICategoryService categoryService;
 	
-
-    //	Lister ou rechercher des catégories (par mots clés)
+    /**
+     * <b> Lister ou rechercher des catégories (par mots clés). </b>
+     * 
+     * @param tags Mots clés
+     * @param model Attributs destinés à la page web.
+     * @return La liste récupérée, vers la page de listing admin.
+     */
 	@RequestMapping(value = { "/admin/categories" }, method = RequestMethod.GET)
     public String listCategories(@RequestParam(value = "tags", required = false) String tags, 
     						Model model) {
@@ -41,7 +62,12 @@ public class CategoryController {
         
     }
 	
-	//	Redirect to categories creation page
+	/**
+     * <b> Redirection vers la page de création d'une catégorie. </b>
+     * 
+     * @param model Attributs destinés à la page web.
+     * @return Une nouvelle catégorie vierge.
+     */
 	@RequestMapping(value = { "/admin/category/new" }, method = RequestMethod.GET)
     public String createCategory(Model model) {
 		
@@ -52,7 +78,13 @@ public class CategoryController {
         
     }
 	
-	//	Redirect to category edit page
+	/**
+     * <b> Redirection vers la page d'édition d'une catégorie. </b>
+     * 
+     * @param id Id de la catégorie recherchée.
+     * @param model Attributs destinés à la page web.
+     * @return La catégorie existante.
+     */
 	@RequestMapping(value = { "/admin/categories/{id}/edit" }, method = RequestMethod.GET)
     public String editCategory(@PathVariable Long id, Model model) {
 		
@@ -69,7 +101,15 @@ public class CategoryController {
         
     }
 	
-	//	Save role into data base
+	/**
+     * <b> Sauvegarder une catégorie. </b>
+     * 
+     * @param category Une catégorie.
+     * @param model Attributs destinés à la page web.
+     * @return La liste de toutes les catégories.
+     * 
+     * @see Category
+     */
 	@RequestMapping(value = { "/admin/categories" }, method = RequestMethod.POST)
     public String saveCategory(@Valid @ModelAttribute("category") Category category, Model model) {
 		
@@ -102,7 +142,16 @@ public class CategoryController {
         
     }
 	
-	//	Update role from data base
+	/**
+     * <b> Mise à jour d'une catégorie. </b>
+     * 
+     * @param category Une catégorie.
+     * @param id L'id de la catégorie à mettre à jour.
+     * @param model Attributs destinés à la page web.
+     * @return La liste de toutes les catégories.
+     * 
+     * @see Category
+     */
 	@RequestMapping(value = { "/admin/categories/{id}" }, method = RequestMethod.POST)
     public String updateCategory(@Valid @ModelAttribute("category") Category category, @PathVariable Long id, Model model) {
 			

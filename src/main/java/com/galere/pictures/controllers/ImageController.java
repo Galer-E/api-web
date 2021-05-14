@@ -1,12 +1,18 @@
 package com.galere.pictures.controllers;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -36,20 +42,47 @@ import com.galere.pictures.services.ICategoryService;
 import com.galere.pictures.services.IImageService;
 import com.google.protobuf.ByteString;
 
+/**
+ * <b>
+ * 	Controller offrant différentes routes pour gérer les images en base de données et sur la machine.
+ * </b>
+ * 
+ * @see Image
+ * @see IImageService
+ * 
+ * @author Ilias HATTANE
+ * @version 1.0
+ *
+ */
 @Controller
 public class ImageController {
 	
+	/**
+	 * <b> Implémentation du service IImageService. </b>
+	 */
     @Autowired
     private IImageService imageService;
     
+    /**
+	 * <b> Implémentation du service ICategoryService. </b>
+	 */
     @Autowired
     private ICategoryService categoryService;
 
+    /**
+   	 * <b> Instance d'un objet d'une librairie permettant d'effectuer une analyse d'image, via une api en ligne. </b>
+   	 */
     private V2Grpc.V2BlockingStub stub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.getGrpcChannel())
     	    .withCallCredentials(new ClarifaiCallCredentials("59a0e133b42a4af78321abb08557bd84"));
     
-    //	Lister ou rechercher des images (par mots clés)
-	@RequestMapping(value = { "/admin/images" }, method = RequestMethod.GET)
+    /**
+     * <b> Lister ou rechercher des images (par mots clés). </b>
+     * 
+     * @param tags Mots clés
+     * @param model Attributs destinés à la page web.
+     * @return La liste récupérée, vers la page de listing admin.
+     */
+    @RequestMapping(value = { "/admin/images" }, method = RequestMethod.GET)
     public String listImages(@RequestParam(value = "tags", required = false) String tags, 
     						Model model) {
 		
@@ -59,13 +92,22 @@ public class ImageController {
 			images = imageService.searchByTags(tags);
 		else
 			images = imageService.getRepository().findAll();
-		
+				
 		model.addAttribute("images", images);
         return "admin/image/ImageList";
         
     }
 	
-	//	Redirect to image creation page
+    /**
+     * <b> Redirection vers la page de création d'une image. </b>
+     * 
+     * <p> On envoie sur cette route une image, on accède ensuite à la page de renseignement des informations de l'image. </p>
+     * <p> Cette méthode effectuera une analyse en ligne de l'image fournit pour obtenir une première analyse du contenu de l'image. </p>
+     * 
+     * @param multipartImage Image à ajouter.
+     * @param model Attributs destinés à la page web.
+     * @return Une nouvelle image vierge.
+     */
 	@RequestMapping(value = { "/admin/image/new" }, method = RequestMethod.POST)
     public String uploadImage(@RequestParam MultipartFile multipartImage, Model model) {
 		
@@ -120,8 +162,15 @@ public class ImageController {
         
     }
 	
-	//	Show image on browser
-	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
+	/**
+	 * <b> Récupérer une image dans une page web vierge. </b>
+	 * 
+	 * @param id Id de l'image.
+	 * @param model Attributs destinés à la page web.
+	 * @return L'image pour la page web.
+	 * @throws Exception En cas d'erreur.
+	 */
+	@RequestMapping(value = "/shared/show/{id}", method = RequestMethod.GET)
     public String showImage(@PathVariable Long id, Model model) throws Exception {
         
 		model.addAttribute("image", imageService.getRepository().findById(id).get());
@@ -130,20 +179,68 @@ public class ImageController {
 		
     }
 	
-	//	Download image
+	/**
+	 * <b> Télécharger une image. </b>
+	 * 
+	 * @param id Id de l'image.
+	 * @param width Largeur de l'image.
+	 * @param height Hauteur de l'image.
+	 * @return L'image en téléchargement.
+	 * @throws Exception En cas d'erreur.
+	 */
 	@RequestMapping(value = "/shared/image/{id}", produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE }, method = RequestMethod.GET)
-    public ResponseEntity getImage(@PathVariable Long id) throws Exception {
+    public ResponseEntity getImage(@PathVariable Long id, @RequestParam(defaultValue = "500") Integer width, 
+    							@RequestParam(defaultValue = "500") Integer height) throws Exception {
         
-		FileSystemResource img = imageService.findImage(id);
+		FileSystemResource initial = imageService.findImage(id);
+		FileSystemResource img = imageService.getResizedImage(initial, width, height);
 		
 		return ResponseEntity.ok()
-				.contentType(img.getFilename().contains(".png") ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG)
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + img.getFilename() + "\"")
+				.contentType(initial.getFilename().contains(".png") ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + initial.getFilename() + "\"")
 				.body(img);
+		
+    }
+	
+	/**
+	 * <b> Télécharger un groupe d'image avec plusieurs formats, dans un zip. </b>
+	 * 
+	 * @param id Id de l'image.
+	 * @param response Renvoyer le zip.
+	 * @throws Exception En cas d'erreur.
+	 */
+	@RequestMapping(value = "/shared/image/group/{id}", produces="application/zip", method = RequestMethod.GET)
+    public void zipImageGroupSize(HttpServletResponse response, @PathVariable Long id) throws Exception {
+        
+		response.setStatus(HttpServletResponse.SC_OK);
+	    response.addHeader("Content-Disposition", "attachment; filename=\"" + imageService.getRepository().findById(id).get().getTitle() + ".zip\"");
+
+	    ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+
+        List<File> files = imageService.getGroupSizeOf(id);
+
+        for (File file : files) {
+            zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+            FileInputStream fileInputStream = new FileInputStream(file);
+
+            IOUtils.copy(fileInputStream, zipOutputStream);
+
+            fileInputStream.close();
+            zipOutputStream.closeEntry();
+        }    
+
+        zipOutputStream.close();
+		
     }
 	
 	
-	//	Redirect to image edit page
+	/**
+     * <b> Redirection vers la page d'édition d'une image. </b>
+     * 
+     * @param id Id de l'image recherchée.
+     * @param model Attributs destinés à la page web.
+     * @return L'image existante.
+     */
 	@RequestMapping(value = { "/admin/images/{id}/edit" }, method = RequestMethod.GET)
     public String editUser(@PathVariable Long id, Model model) {
 		
@@ -160,7 +257,15 @@ public class ImageController {
         
     }
 	
-	//	Redirect to image deletion page
+	/**
+	 * <b> Redirection vers la page de suppression d'une image. </b>
+	 * 
+	 * <p> Cette page sert de validation à la suppression. </p>
+	 * 
+	 * @param id Id de l'image.
+	 * @param model Attributs destinés à la page web.
+	 * @return La page de validation de la suppression.
+	 */
 	@RequestMapping(value = { "/admin/images/{id}/delete" }, method = RequestMethod.GET)
     public String removeImage(@PathVariable Long id, Model model) {
 		
@@ -175,7 +280,14 @@ public class ImageController {
         
     }
 
-	//	Update image from data base
+	/**
+	 * <b> Mise à jours des informations relatives à une image. </b>
+	 * 
+	 * @param img Image modifiée.
+	 * @param id Id de l'image.
+	 * @param model Attributs destinés à la page web.
+	 * @return La mise à jours puis la redirection vers la page de listing.
+	 */
 	@RequestMapping(value = { "/admin/images/{id}" }, method = RequestMethod.POST)
     public String updateImage(@Valid @ModelAttribute("image") Image img, @PathVariable Long id, Model model) {
 		
@@ -214,7 +326,13 @@ public class ImageController {
         
     }
 	
-	//	Delete image from data base
+	/**
+	 * <b> Suppression d'une image en base de données et sur la machine. </b>
+	 * 
+	 * @param id Id de l'image.
+	 * @param model Attributs destinés à la page web.
+	 * @return La suppression, puis redirection vers la page de listing admin.
+	 */
 	@RequestMapping(value = { "/admin/images/{id}/delete" }, method = RequestMethod.POST)
     public String deleteImage(@PathVariable Long id, Model model) {
 					

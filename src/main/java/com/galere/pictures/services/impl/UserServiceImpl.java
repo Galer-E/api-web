@@ -11,9 +11,26 @@ import com.galere.pictures.entities.User;
 import com.galere.pictures.repositories.UserRepository;
 import com.galere.pictures.services.IUserService;
 
+/**
+ * <b>
+ * 	Implémentation du service IUserService.
+ * </b>
+ * 
+ * @see IUserService
+ * @see User
+ * 
+ * @author Ilias HATTANE
+ * @version 1.0
+ *
+ */
 @Service
 public class UserServiceImpl implements IUserService {
 
+	/**
+	 * <b> Instance du repository UserRepository. </b>
+	 * 
+	 * @see UserRepository
+	 */
 	@Autowired
 	private UserRepository repository;
 	

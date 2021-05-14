@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonTextStyle.css} "/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonObjectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/IndexStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/ConnectStyle.css}"/>
+		<link th:rel="stylesheet" th:href="@{/css/CommonImageStyle.css}" />
+		<title th:utext="#{title}"></title>
+	</head>
+		
+	<body>
+		<div class="container-fluid m-0 p-0">
+			
+			<div sec:authorize="isAuthenticated()">
+				<div th:replace="/fragments/basic/nav-bar.html :: nav-connected(#{user.list}, true)"></div>
+				
+				<div class="container-fluid">
+					<div class="row justify-content-center mb-2 mt-4">
+						<h3 class="border-bottom border-dark" th:text="#{shared.allimages}">
+							
+						</h3>
+					</div>
+					
+					<div class="row m-0 p-0 justify-content-center mb-4">
+						<form th:action="@{/shared}" class="input-group col-6">
+						  	<input type="text" class="form-control" th:name="tags" th:placeholder="#{shared.list.bysearch}">
+						  	<div class="input-group-append">
+						    	<button type="submit" class="input-group-text button-search" id="basic-addon2" th:utext="#{button.search}"></button>
+						  	</div>
+						</form>
+					</div>
+					
+					<div class="row m-0 p-0 justify-content-center pb-5">
+						<div th:each="image : ${images}" class="col-3 image-container">
+							<img class="img-thumbnail p-0" th:src="@{/shared/image/{id}(id=${image.id})}" />
+							<div class="image-container-centered-bottom pb-3" >
+								<p class="text-center font-weight-bold bg-dark pl-2 pr-2" th:text="${image.title}"></p>
+							</div>
+							<form class="image-container-centered-bottom mt-3" th:action="@{/shared/show/{id}(id=${image.id})}" >
+								<button type="submit" class="btn">+</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+   </body>
+   
+   <div th:replace="/fragments/basic/footer.html :: footer"></div>
+</html>

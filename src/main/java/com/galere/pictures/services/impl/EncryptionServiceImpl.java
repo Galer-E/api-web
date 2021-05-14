@@ -16,15 +16,41 @@ import com.galere.pictures.entities.User;
 import com.galere.pictures.services.IEncryptionService;
 import com.galere.pictures.services.IUserService;
 
+/**
+ * <b>
+ * 	Implémentation du service IEncryptionService.
+ * </b>
+ * 
+ * @see IEncryptionService
+ * 
+ * @author Ilias HATTANE
+ * @version 1.0
+ *
+ */
 @Service
 public class EncryptionServiceImpl implements IEncryptionService {
 
+	/**
+	 * <b> Valeur de la propriétée encryption.key. </b>
+	 */
 	@Value( "${encryption.key}" )
 	private String key;
 	
+	/**
+	 * <b> Dernière clé utilisée (nécessaire en cas de mise à jour de la clé de chiffrement. </b>
+	 */
 	private String previousKey = null;
+	
+	/**
+	 * <b> Clé initiale de chiffrement, nécessaire pour rechiffrer les mots de passes avec la clé initiale. </b>
+	 */
 	private String initialKey = null;
 	
+	/**
+	 * <b> Implémentation du service IUserService. </b>
+	 * 
+	 * @see IUserService
+	 */
 	@Autowired
 	private IUserService users;
 
@@ -118,7 +144,18 @@ public class EncryptionServiceImpl implements IEncryptionService {
 			
 		} catch (Exception e) {e.printStackTrace();}
 	}
-		
+	
+	/**
+	 * <b> Permet la génération d'une nouvelle clé de chiffrement. </b>
+	 * 
+	 * <p> 
+	 * 	La clé de chiffrement a nécessairement 16, 24, ou 32 bytes. Si une clé généré n'a pas l'une de ces trois
+	 * 	valeures, elle sera régénérée de nouveau jusqu'à atteindre la bonne valeure.
+	 * </p>
+	 * 
+	 * @return La nouvelle clé de chiffrement.
+	 * @throws NoSuchAlgorithmException En cas d'erreur.
+	 */
 	private String generateNewKey() throws NoSuchAlgorithmException {
 		String newS;
 		int size, count = 0;
@@ -143,6 +180,18 @@ public class EncryptionServiceImpl implements IEncryptionService {
 	    return newS;
 	}
 
+	/**
+	 * <b> Permet de déchiffrer une chaine de carractères avec une clé particulière. </b>
+	 * 
+	 * <p>
+	 * 	Utilisé par exemple pour déchiffrer un mot de passe après la génération d'une nouvelle clé.
+	 * </p>
+	 * 
+	 * @param encrypted La chaine de carractères à déchiffrer.
+	 * @param key La clé de chiffrement.
+	 * @return La chaine de carractères déchiffrée.
+	 * @throws Exception En cas d'erreur.
+	 */
 	private String decrypt(String encrypted, String key) throws Exception {
 		String decrypted="";
 		
