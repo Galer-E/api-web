@@ -50,11 +50,12 @@
 								<th th:utext="#{admin.image.list.content}"></th>
 								<th th:utext="#{admin.image.list.tags}"></th>
 								<th th:utext="#{admin.image.list.categories}"></th>
+								<th th:utext="#{admin.image.list.enabled}"></th>
 								<th th:utext="#{admin.image.list.date}"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="image : ${images}">
+							<tr class="text-justify" th:each="image : ${images}">
 								<th scope="row" th:utext="${image.id}">...</th>
 								<th th:utext="${image.title}">...</th>
 								<th th:utext="${image.description}">...</th>
@@ -62,6 +63,9 @@
 								<th th:utext="${image.content}">...</th>
 								<th th:utext="${image.tags}">...</th>
 								<th th:utext="${image.getStringCategories()}">...</th>
+								<th class="text-center" th:if="${image.enabled}">&#9745;</th>
+								<th class="text-center" th:unless="${image.enabled}">&#9746;</th>
+								<th th:utext="${image.date}">...</th>
 								<th th:utext="${image.date}">...</th>
 								<th>
 									<a th:utext="#{admin.options.edit}" th:href="@{/admin/images/{id}/edit(id=${image.id})}"></a>

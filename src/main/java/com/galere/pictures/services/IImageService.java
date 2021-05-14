@@ -92,6 +92,7 @@ public interface IImageService {
 	 * @param targetWidth Nouvelle largeur.
 	 * @param targetHeight Nouvelle hauteur.
 	 * @return L'image redimensionnée.
+	 * @throws IOException
 	 */
 	public BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException;
 
@@ -100,16 +101,18 @@ public interface IImageService {
 	 * 
 	 * @param id Id de l'image.
 	 * @return La liste d'image redimensionnées.
+	 * @throws Exception
 	 */
 	public List<File> getGroupSizeOf(Long id) throws Exception;
 
 	/**
 	 * <b> Récupérer une image dans un autre format. </b>
 	 * 
-	 * @param id Id de l'image.
+	 * @param initial Image initiale.
 	 * @param width Nouvelle largeur.
 	 * @param height Nouvelle hauteur.
 	 * @return L'image redimensionnée.
+	 * @throws Exception
 	 */
 	public FileSystemResource getResizedImage(FileSystemResource initial, Integer width, Integer height) throws Exception;
 

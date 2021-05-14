@@ -1,6 +1,7 @@
 package com.galere.pictures.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,13 +66,14 @@ public class MainController {
      */
 	@RequestMapping(value = "/admin/prepare-end", method = RequestMethod.GET)
     public String prepareEnd(Model model) {
-		
+
 		log.info("----- END OF APPLICATION DETECTED -----");
         ApplicationEndHandle.reloader.end();
         log.info("Saving users..."); 
         encryption.loadInitialKey();
         log.info("OK");
         log.info("----- END OF APPLICATION DETECTED -----");
+
 		
         return "index";
     }
@@ -91,6 +93,7 @@ public class MainController {
 	 * <b> Accéder à son espace personnel (utilisateur), nécessite d'être connecté. </b>
 	 * 
 	 * @param model Attributs destinés à la page web.
+	 * @param tags Mots clés.
 	 * @return La page d'espace utilisateur.
 	 */
 	@RequestMapping(value = "/shared", method = RequestMethod.GET)
@@ -103,6 +106,8 @@ public class MainController {
 			imgs = images.searchByTags(tags);
 		else
 			imgs = images.getRepository().findAll();
+		
+		imgs = imgs.stream().filter(img -> img.getEnabled()).collect(Collectors.toList());
 		
 		model.addAttribute("images", imgs);
         return "shared/index";
@@ -119,8 +124,8 @@ public class MainController {
 	@RequestMapping(value = { "/", "index", "login" }, method = RequestMethod.GET)
     public String home(Model model) {
 		
-		model.addAttribute("images", images.getRepository().findAll());
-		
+		model.addAttribute("images", images.getRepository().findAll().stream().filter(img -> Boolean.TRUE.equals(img.getEnabled())).collect(Collectors.toList()));
+
         return "index";
     }
 	

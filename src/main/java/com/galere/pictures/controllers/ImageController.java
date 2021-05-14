@@ -1,18 +1,14 @@
 package com.galere.pictures.controllers;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -96,7 +92,7 @@ public class ImageController {
 			images = imageService.searchByTags(tags);
 		else
 			images = imageService.getRepository().findAll();
-		
+				
 		model.addAttribute("images", images);
         return "admin/image/ImageList";
         
@@ -207,10 +203,10 @@ public class ImageController {
     }
 	
 	/**
-	 * <b> Télécharger un groupe image. </b>
+	 * <b> Télécharger un groupe d'image avec plusieurs formats, dans un zip. </b>
 	 * 
 	 * @param id Id de l'image.
-	 * @return L'image en téléchargement.
+	 * @param response Renvoyer le zip.
 	 * @throws Exception En cas d'erreur.
 	 */
 	@RequestMapping(value = "/shared/image/group/{id}", produces="application/zip", method = RequestMethod.GET)

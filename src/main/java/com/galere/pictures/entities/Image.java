@@ -119,6 +119,12 @@ public class Image {
 	private LocalDate date;
 	
 	/**
+	 * <b> Variable définissant l'activation d'une image, sa visibilité. </b>
+	 */
+	@Column(name = "enabled")
+	private Boolean enabled;
+	
+	/**
 	 * <b> Liste des catégories de l'image. </b>
 	 * 
 	 * @see Image#getCategories()
@@ -303,6 +309,14 @@ public class Image {
 	 */
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }
